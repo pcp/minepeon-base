@@ -327,7 +327,7 @@ include('menu.php');
         <label for="minerSettings" class="control-label col-lg-3">Settings</label>
         <div class="col-lg-9">
           <div>
-			<textarea rows="4" cols="120" id="minerSettings" name="minerSettings"><?php echo $minerStartup ?></textarea>
+			<textarea rows="10" cols="120" id="minerSettings" name="minerSettings"><?php echo $minerStartup ?></textarea>
           </div>
         </div>
       </div>
