@@ -2,6 +2,7 @@
 
 require('miner.inc.php');
 include('settings.inc.php');
+include('functions.inc.php');
 
 //MinePeon temperature
 $mpTemp = round(exec('cat /sys/class/thermal/thermal_zone0/temp') / 1000, 2);
@@ -12,6 +13,16 @@ $version = exec('cat /opt/minepeon/etc/version');
 //MinePeon CPU load
 $mpCPULoad = sys_getloadavg();
 
+
+if (isset($_GET['url']) and isset($_GET['user'])) {
+
+	$poolMessage = "Pool  Change Requested " . $_GET['url'] . $_GET['user'];
+
+	// echo $poolMessage;
+	
+	promotePool($_GET['url'], $_GET['user']);
+	
+}
 
 $stats = cgminer("devs", "");
 $status = $stats['STATUS'];
@@ -232,6 +243,9 @@ function poolsTable($pools) {
   $poolID = 0;
 
   $table = "";
+  
+  array_sort_by_column($pools, 'Priority');
+
   foreach ($pools as $pool) {
 
     if ($pool['Status'] <> "Alive") {

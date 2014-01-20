@@ -29,11 +29,14 @@ function cgminer($command, $parameter) {
 
 function promotePool($addr, $user){
   $pools = cgminer('pools','')['POOLS'];
-  $pool = -1;
-  foreach ($pools as $k => $v) {
-    if(isset($v['User']) && $v['User']==$addr && $v['User']==$addr){
-      $donatePool = $k;
+  $pool = 0;
+  // echo "changeing";
+  foreach ($pools as $key => $value) {
+    if(isset($value['User']) && $value['URL']==$addr && $value['User']==$user){
+	  // echo "found";
+	  cgminer('switchpool',$pool);
     }
+	$pool = $pool + 1;
   }
-  return $donatePool;
+  
 }
