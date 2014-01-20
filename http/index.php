@@ -4,6 +4,10 @@ require('miner.inc.php');
 include('settings.inc.php');
 include('functions.inc.php');
 
+// A few globals for the title of the page
+
+$G_MHSav = 0;
+
 //MinePeon temperature
 $mpTemp = round(exec('cat /sys/class/thermal/thermal_zone0/temp') / 1000, 2);
 
@@ -115,6 +119,21 @@ include('menu.php');
   ?>
 
 </div>
+<script language="javascript" type="text/javascript">
+
+document.title = '<?php echo $G_MHSav; ?>|<?php echo $version; ?>';
+
+<?php 
+
+// Change screen colour test for alerts
+
+if ($settings['donateAmount'] < 1) {
+	echo 'document.body.style.background = "#FFFFCF"';
+}
+
+?>
+
+</script>
 <?php
 include('foot.php');
 
@@ -175,6 +194,7 @@ function statsTable($devs) {
 	  $hwErrorPercent = $hwErrorPercent + $dev['DeviceHardware%'];
       $Utility = $Utility + $dev['Utility'];
 
+	  $GLOBALS['G_MHSav'] = $MHSav . " MH/s|" . $devices . " DEV";
     }
   }
 
