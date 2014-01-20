@@ -12,5 +12,5 @@ header('Pragma: no-cache');
 header('Expires: 0');
 
 // create the gzipped tarfile.
-passthru( "tar cz /opt/minepeon/etc/minepeon.conf /opt/minepeon/etc/miner.conf /opt/minepeon/etc/uipassword /opt/minepeon/var/rrd/*.rrd /opt/minepeon/etc/init.d/miner-start.sh");
+passthru( "tar cz /opt/minepeon/etc/minepeon.conf /opt/minepeon/etc/miner.conf /opt/minepeon/etc/uipassword /opt/minepeon/var/rrd/*.rrd /opt/minepeon/var/sql/*.db /opt/minepeon/etc/init.d/miner-start.sh");
 
