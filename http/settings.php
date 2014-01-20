@@ -327,7 +327,7 @@ include('menu.php');
         <label for="minerSettings" class="control-label col-lg-3">Settings</label>
         <div class="col-lg-9">
           <div>
-			<textarea rows="10" cols="120" id="minerSettings" name="minerSettings"><?php echo $minerStartup ?></textarea>
+			<textarea rows="15" cols="120" id="minerSettings" name="minerSettings"><?php echo $minerStartup ?></textarea>
           </div>
         </div>
       </div>
@@ -339,10 +339,10 @@ include('menu.php');
 		  <script language="javascript" type="text/javascript">
 			function myFunction(miner) {
 			  if (miner == "cgminer") {
-				document.getElementById('minerSettings').value = "#!/bin/bash\nsleep 10\n/usr/bin/screen -dmS miner /opt/minepeon/bin/cgminer -c /opt/minepeon/etc/miner.conf\n";
+				document.getElementById('minerSettings').value = "#!/bin/bash\nsleep 10\nTARGET_DATE=20000101\nTIMEOUT=30\n\nwhile [ `date +\"%Y%M%d\"` -lt $TARGET_DATE ]; do\n sleep 1\n x=$(( $x + 1 ))\n if [ $x -gt $TIMEOUT ]\n then\n   break\n fi\ndone\n\n/usr/bin/screen -dmS miner /opt/minepeon/bin/cgminer -c /opt/minepeon/etc/miner.conf";
 			  } 
 			  if (miner == "bfgminer") {
-				document.getElementById('minerSettings').value = "#!/bin/bash\nsleep 10\n/usr/bin/screen -dmS miner /opt/minepeon/bin/bfgminer -S all -c /opt/minepeon/etc/miner.conf\n";
+				document.getElementById('minerSettings').value = "#!/bin/bash\nsleep 10\nTARGET_DATE=20000101\nTIMEOUT=30\n\nwhile [ `date +\"%Y%M%d\"` -lt $TARGET_DATE ]; do\n sleep 1\n x=$(( $x + 1 ))\n if [ $x -gt $TIMEOUT ]\n then\n   break\n fi\ndone\n\n/usr/bin/screen -dmS miner /opt/minepeon/bin/bfgminer -S all -c /opt/minepeon/etc/miner.conf\n\n";
 			  }
 			}
 		  </script>
