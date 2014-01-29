@@ -78,6 +78,16 @@ $(document).ready(function () {
     // to the options and initiate the chart.
     // This data is obtained by exporting a GA custom report to TSV.
     // http://api.jquery.com/jQuery.get/
+	//
+	// http://stackoverflow.com/questions/3075577/convert-mysql-datetime-stamp-into-javascripts-date-format
+	// Split timestamp into [ Y, M, D, h, m, s ]
+	// var t = "2010-06-09 13:12:01".split(/[- :]/);
+	//
+	// Apply each element to the Date function
+	// var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+	//
+	// alert(d);
+	// -> Wed Jun 09 2010 13:12:01 GMT+0100 (GMT Daylight Time)
     jQuery.get('summary.php', null, function (tsv) {
         var lines = [];
         HashRate = [];
@@ -89,14 +99,16 @@ $(document).ready(function () {
             jQuery.each(tsv, function (i, line) {
                 line = line.split(/\t/);
                 date = Date.parse(line[0] + ' UTC');
+				var t = line[0].split(/[- :]/);
+				var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
                 HashRate.push([
-                date,
+                d,
                 parseFloat(line[1].replace(',', ''), 10) * 1000, ]);
                 TotalBTC.push([
-                date,
+                d,
                 parseFloat(line[2].replace(',', ''), 10) * 1000, ]);
                 BTClast24H.push([
-                date,
+                d,
                 parseFloat(line[3].replace(',', ''), 10), ]);
             });
         } catch (e) {}

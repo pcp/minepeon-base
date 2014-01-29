@@ -12,6 +12,7 @@ $results = $db->query($sql);
 while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
 
 	echo $row['datetime'] . "\t";
+//	echo strtotime($row['datetime']) . "\t";
 	if ($row['MHSav'] != '') {
 		echo $row['MHSav'] . "\t";
 	} else {
