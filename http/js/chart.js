@@ -90,9 +90,9 @@ $(document).ready(function () {
 	// -> Wed Jun 09 2010 13:12:01 GMT+0100 (GMT Daylight Time)
     jQuery.get('summary.php', null, function (tsv) {
         var lines = [];
-        HashRate = [];
-        TotalBTC = [];
-        BTClast24H = [];
+        GHAvg = [];
+        GHActual = [];
+        DeviceTemp = [];
         try {
             // split the data return into lines and parse them
             tsv = tsv.split(/\n/g);
@@ -101,20 +101,20 @@ $(document).ready(function () {
                 date = Date.parse(line[0] + ' UTC');
 				var t = line[0].split(/[- :]/);
 				var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-                HashRate.push([
+                GHAvg.push([
                 d,
                 parseFloat(line[1].replace(',', ''), 10) * 1000, ]);
-                TotalBTC.push([
+                GHActual.push([
                 d,
                 parseFloat(line[2].replace(',', ''), 10) * 1000, ]);
-                BTClast24H.push([
+                DeviceTemp.push([
                 d,
                 parseFloat(line[3].replace(',', ''), 10), ]);
             });
         } catch (e) {}
-        options.series[0].data = HashRate;
-        options.series[1].data = TotalBTC;
-        options.series[2].data = BTClast24H;
+        options.series[0].data = GHAvg;
+        options.series[1].data = GHActual;
+        options.series[2].data = DeviceTemp;
         chart = new Highcharts.Chart(options);
 		var d = new Date();
 		chart.xAxis[0].setExtremes(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() - 1, d.getHours(), d.getMinutes()), Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
