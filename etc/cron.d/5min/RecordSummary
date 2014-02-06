@@ -6,6 +6,8 @@ require('miner.inc.php');
 
 $datetime = date("Y-m-d H:i:s");
 
+if (date("Y") < 2014) die ("Time is out, not recording it\n");
+
 $db = new PDO('sqlite:/opt/minepeon/var/sql/summary.db');
 
 $return = cgminer("summary", "");
