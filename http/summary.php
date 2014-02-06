@@ -2,7 +2,7 @@
 
 $db = new PDO('sqlite:/opt/minepeon/var/sql/summary.db');
 
-$sql = "SELECT * from summary";
+$sql = "SELECT * from summary ORDER BY datetime";
 
 
 $results = $db->query($sql);
@@ -11,8 +11,8 @@ $results = $db->query($sql);
 
 while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
 
-	echo $row['datetime'] . "\t";
-//	echo strtotime($row['datetime']) . "\t";
+//	echo $row['datetime'] . "\t";
+	echo strtotime($row['datetime']) . "\t";
 	if ($row['MHSav'] != '') {
 		echo $row['MHSav'] . "\t";
 	} else {

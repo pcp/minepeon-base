@@ -8,6 +8,14 @@ $(document).ready(function () {
             marginBottom: 50,
             zoomType: 'x'
         },
+		tooltip: {
+			enabled: true,
+			formatter: function() {
+				return '<b>'+ this.series.name +'</b><br/>'+
+				Highcharts.dateFormat('%a %d %b %Y %H:%M:%S', this.x*1000) +'<br/>'+ 
+				this.y;
+			}
+		},
         plotOptions: {
             series: {
                 lineWidth: 1,
@@ -33,7 +41,16 @@ $(document).ready(function () {
                 align: 'center',
                 x: -3,
                 y: 20,
-            }
+			},
+			dateTimeLabelFormats: {
+				second: '%a %d %b %Y<br/>%H:%M:%S',
+				minute: '%a %d %b %Y<br/>%H:%M:%S',
+				hour: '%a %d %b %Y<br/>%H:%M:%S',
+				day: '%a %d %b %Y<br/>%H:%M:%S',
+				week: '%a %d %b %Y<br/>%H:%M:%S',
+				month: '%a %d %b %Y<br/>%H:%M:%S',
+				year: '%a %d %b %Y<br/>%H:%M:%S'
+			}
         },
         yAxis: [{
 			min: 0,
@@ -98,17 +115,21 @@ $(document).ready(function () {
             tsv = tsv.split(/\n/g);
             jQuery.each(tsv, function (i, line) {
                 line = line.split(/\t/);
-                date = Date.parse(line[0] + ' UTC');
+                // date = Date.parse(line[0] + ' UTC');
+				date = Date.parse(line[0]);
 				var t = line[0].split(/[- :]/);
-				var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+				// var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
                 GHAvg.push([
-                d,
+                //date,
+				line[0],
                 parseFloat(line[1].replace(',', ''), 10) * 1000, ]);
                 GHActual.push([
-                d,
+                //date,
+				line[0],
                 parseFloat(line[2].replace(',', ''), 10) * 1000, ]);
                 DeviceTemp.push([
-                d,
+                //date,
+				line[0],
                 parseFloat(line[3].replace(',', ''), 10), ]);
             });
         } catch (e) {}
@@ -117,8 +138,8 @@ $(document).ready(function () {
         options.series[2].data = DeviceTemp;
         chart = new Highcharts.Chart(options);
 		var d = new Date();
-		chart.xAxis[0].setExtremes(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() - 1, d.getHours(), d.getMinutes()), Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
+		//chart.xAxis[0].setExtremes(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate() - 1, d.getHours(), d.getMinutes()), Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
 		// javascript is stupid (or I am) why cant the above line be between Now() - 1 day and Now() ?????
-		chart.showResetZoom();
+		//chart.showResetZoom();
     });
 });
