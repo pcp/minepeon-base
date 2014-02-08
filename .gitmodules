@@ -1,0 +1,3 @@
+[submodule "submodules/phpSec"]
+	path = submodules/phpSec
+	url = https://github.com/phpsec/phpSec.git
