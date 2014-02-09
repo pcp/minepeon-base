@@ -1,5 +1,9 @@
 <?php
 
+
+// Add minepeon settings for timezone
+require('settings.inc.php');
+
 //
 //  Project: phpLiteAdmin (http://phpliteadmin.googlecode.com)
 //  Version: 1.9.4.1
