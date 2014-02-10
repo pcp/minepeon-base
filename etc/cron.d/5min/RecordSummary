@@ -1,10 +1,11 @@
 #!/usr/bin/php
 <?php
 
-require('settings.inc.php');
-require('miner.inc.php');
+// Doing this all longhand to make detecting miner API changes easier
 
-$datetime = date("Y-m-d H:i:s");
+require('miner.inc.php');
+require('settings.inc.php');
+require('functions.inc.php');
 
 if (date("Y") < 2014) die ("Time is out, not recording it\n");
 
@@ -12,42 +13,69 @@ $db = new PDO('sqlite:/opt/minepeon/var/sql/summary.db');
 
 $return = cgminer("summary", "");
 
-$PiTemperature = round(exec('cat /sys/class/thermal/thermal_zone0/temp') / 1000, 2);
+$When				= 0;
+$Description		= '';
+$MHSav				= 0;
+$MHS5s				= 0;
+$FoundBlocks		= 0;
+$Getworks			= 0;
+$Accepted			= 0;
+$Rejected			= 0;
+$HardwareErrors		= 0;
+$Utility			= 0;
+$Discarded			= 0;
+$Stale				= 0;
+$GetFailures		= 0;
+$LocalWork			= 0;
+$RemoteFailures		= 0;
+$NetworkBlocks		= 0;
+$TotalMH			= 0;
+$Diff1Work			= 0;
+$WorkUtility		= 0;
+$DifficultyAccepted	= 0;
+$DifficultyRejected	= 0;
+$DifficultyStale	= 0;
+$BestShare			= 0;
+$DeviceHardware		= 0;
+$DeviceRejected		= 0;
+$PoolRejected		= 0;
+$PoolStale			= 0;
+$PiTemperature		= 0;
+$datetime			= 0;
 
-
+if (isset($return["STATUS"][0]["When"]))				{$When 					= $return["STATUS"][0]["When"];};
+if (isset($return["STATUS"][0]["Description"]))			{$Description 			= $return["STATUS"][0]["Description"];};
+if (isset($return["SUMMARY"][0]["MHSav"]))				{$MHSav 				= $return["SUMMARY"][0]["MHSav"];};
+if (isset($return["SUMMARY"][0]["MHS5s"]))				{$MHS5s 				= $return["SUMMARY"][0]["MHS5s"];};
+if (isset($return["SUMMARY"][0]["FoundBlocks"]))		{$FoundBlocks 			= $return["SUMMARY"][0]["FoundBlocks"];};
+if (isset($return["SUMMARY"][0]["Getworks"]))			{$Getworks 				= $return["SUMMARY"][0]["Getworks"];};
+if (isset($return["SUMMARY"][0]["Accepted"]))			{$Accepted 				= $return["SUMMARY"][0]["Accepted"];};
+if (isset($return["SUMMARY"][0]["Rejected"]))			{$Rejected 				= $return["SUMMARY"][0]["Rejected"];};
+if (isset($return["SUMMARY"][0]["HardwareErrors"]))		{$HardwareErrors 		= $return["SUMMARY"][0]["HardwareErrors"];};
+if (isset($return["SUMMARY"][0]["Utility"]))			{$Utility 				= $return["SUMMARY"][0]["Utility"];};
+if (isset($return["SUMMARY"][0]["Discarded"]))			{$Discarded 			= $return["SUMMARY"][0]["Discarded"];};
+if (isset($return["SUMMARY"][0]["Stale"]))				{$Stale 				= $return["SUMMARY"][0]["Stale"];};
+if (isset($return["SUMMARY"][0]["GetFailures"]))		{$GetFailures 			= $return["SUMMARY"][0]["GetFailures"];};
+if (isset($return["SUMMARY"][0]["LocalWork"]))			{$LocalWork 			= $return["SUMMARY"][0]["LocalWork"];};
+if (isset($return["SUMMARY"][0]["RemoteFailures"]))		{$RemoteFailures 		= $return["SUMMARY"][0]["RemoteFailures"];};
+if (isset($return["SUMMARY"][0]["Description"]))		{$NetworkBlocks 		= $return["SUMMARY"][0]["NetworkBlocks"];};
+if (isset($return["SUMMARY"][0]["NetworkBlocks"]))		{$TotalMH 				= $return["SUMMARY"][0]["TotalMH"];};
+if (isset($return["SUMMARY"][0]["Diff1Work"]))			{$Diff1Work 			= $return["SUMMARY"][0]["Diff1Work"];};
+if (isset($return["SUMMARY"][0]["WorkUtility"]))		{$WorkUtility 			= $return["SUMMARY"][0]["WorkUtility"];};
+if (isset($return["SUMMARY"][0]["DifficultyAccepted"]))	{$DifficultyAccepted 	= $return["SUMMARY"][0]["DifficultyAccepted"];};
+if (isset($return["SUMMARY"][0]["DifficultyRejected"]))	{$DifficultyRejected 	= $return["SUMMARY"][0]["DifficultyRejected"];};
+if (isset($return["SUMMARY"][0]["DifficultyStale"]))	{$DifficultyStale 		= $return["SUMMARY"][0]["DifficultyStale"];};
+if (isset($return["SUMMARY"][0]["BestShare"]))			{$BestShare 			= $return["SUMMARY"][0]["BestShare"];};
+if (isset($return["SUMMARY"][0]["DeviceHardware"]))		{$DeviceHardware 		= $return["SUMMARY"][0]["DeviceHardware%"];};
+if (isset($return["SUMMARY"][0]["DeviceRejected"]))		{$DeviceRejected 		= $return["SUMMARY"][0]["DeviceRejected%"];};
+if (isset($return["SUMMARY"][0]["PoolRejected"]))		{$PoolRejected 			= $return["SUMMARY"][0]["PoolRejected%"];};
+if (isset($return["SUMMARY"][0]["PoolStale"]))			{$PoolStale				= $return["SUMMARY"][0]["PoolStale%"];};
+$PiTemperature 			= round(exec('cat /sys/class/thermal/thermal_zone0/temp') / 1000, 2);
+$datetime 				= date("Y-m-d H:i:s");
 
 $sql = 'INSERT INTO "summary" ("When","Description","MHSav","MHS5s","FoundBlocks","Getworks","Accepted","Rejected","HardwareErrors","Utility","Discarded","Stale","GetFailures","LocalWork","RemoteFailures","NetworkBlocks","TotalMH","Diff1Work","WorkUtility","DifficultyAccepted","DifficultyRejected","DifficultyStale","BestShare","DeviceHardware%","DeviceRejected%","PoolRejected%","PoolStale%","PiTemperature", "datetime") 
-	VALUES ("' .
-	$return["STATUS"][0]["When"] . '", "' .
-	$return["STATUS"][0]["Description"] . '", "' .
-	$return["SUMMARY"][0]["MHSav"] . '", "' .
-	$return["SUMMARY"][0]["MHS5s"] . '", "' .
-	$return["SUMMARY"][0]["FoundBlocks"] . '", "' .
-	$return["SUMMARY"][0]["Getworks"] . '", "' .
-	$return["SUMMARY"][0]["Accepted"] . '", "' .
-	$return["SUMMARY"][0]["Rejected"] . '", "' .
-	$return["SUMMARY"][0]["HardwareErrors"] . '", "' .
-	$return["SUMMARY"][0]["Utility"] . '", "' .
-	$return["SUMMARY"][0]["Discarded"] . '", "' .
-	$return["SUMMARY"][0]["Stale"] . '", "' .
-	$return["SUMMARY"][0]["GetFailures"] . '", "' .
-	$return["SUMMARY"][0]["LocalWork"] . '", "' .
-	$return["SUMMARY"][0]["RemoteFailures"] . '", "' .
-	$return["SUMMARY"][0]["NetworkBlocks"] . '", "' .
-	$return["SUMMARY"][0]["TotalMH"] . '", "' .
-	$return["SUMMARY"][0]["Diff1Work"] . '", "' .
-	$return["SUMMARY"][0]["WorkUtility"] . '", "' .
-	$return["SUMMARY"][0]["DifficultyAccepted"] . '", "' .
-	$return["SUMMARY"][0]["DifficultyRejected"] . '", "' .
-	$return["SUMMARY"][0]["DifficultyStale"] . '", "' .
-	$return["SUMMARY"][0]["BestShare"] . '", "' .
-	$return["SUMMARY"][0]["DeviceHardware%"] . '", "' .
-	$return["SUMMARY"][0]["DeviceRejected%"] . '", "' .
-	$return["SUMMARY"][0]["PoolRejected%"] . '", "' .
-	$return["SUMMARY"][0]["PoolStale%"] . '", "' .
-	$PiTemperature . '", "' .
-	$datetime . '")';
-	
-// echo $sql;
+VALUES ('.$When.',"'.$Description.'",'.$MHSav.','.$MHS5s.','.$FoundBlocks.','.$Getworks.','.$Accepted.','.$Rejected.','.$HardwareErrors.','.$Utility.','.$Discarded.','.$Stale.','.$GetFailures.','.$LocalWork.','.$RemoteFailures.','.$NetworkBlocks.','.$TotalMH.','.$Diff1Work.','.$WorkUtility.','.$DifficultyAccepted.','.$DifficultyRejected.','.$DifficultyStale.','.$BestShare.','.$DeviceHardware.','.$DeviceRejected.','.$PoolRejected.','.$PoolStale.','.$PiTemperature.',"'.$datetime.'")';
+
+echo $sql;
 
 $db->exec($sql);
