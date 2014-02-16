@@ -1,4 +1,36 @@
-<!DOCTYPE html>
+<?php
+// require_once '/opt/minepeon/submodules/phpSec/bootstrap.php';
+
+// $psl = new phpSec\Core();
+
+// $session = $psl['session'];
+
+// $session->start();
+
+// $token = $psl['common/token'];
+
+// echo $token->set('up');
+
+// if(isset($_POST['do'])) {
+  // if($token->validate('myform', $_POST['token'])) {
+    // echo "Valid token!";
+    // /* Do stuff with POST data. */
+  // } else {
+    // die("Invalid token!  Someone just attacked your MinePeon using a CSRF attack!<br />
+			// See http://en.wikipedia.org/wiki/Cross-site_request_forgery for details.<br /><br />
+			// Your miner is still working (probably) but this page request has been shut down.<br />
+			// If this message is en error, please try again from the beginning.<br /><br />
+			// Please report your findings on the MinePeon forums (http://minepeon/forums)");
+  // }
+// }
+
+
+session_start(); 
+
+
+
+
+?><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">

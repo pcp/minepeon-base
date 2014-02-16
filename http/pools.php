@@ -1,5 +1,9 @@
 <?php
-require('settings.inc.php');
+require('miner.inc.php');
+include('settings.inc.php');
+include('functions.inc.php');
+
+csrfguard_start();
 
 // set the number of extra empty rows for adding pools
 $extraPools = 2;

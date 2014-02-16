@@ -1,7 +1,10 @@
 <?php
 
-require_once('settings.inc.php');
-require_once('miner.inc.php');
+require('miner.inc.php');
+include('settings.inc.php');
+include('functions.inc.php');
+
+csrfguard_start();
  
 // Check for settings to write and do it after all checks
 $writeSettings=false;
