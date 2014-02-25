@@ -2,7 +2,7 @@
 
 $db = new PDO('sqlite:/opt/minepeon/var/sql/summary.db');
 
-$sql = "SELECT * from summary ORDER BY datetime";
+$sql = "select * from summary where datetime > datetime('now', '-30 days');";
 
 $results = $db->query($sql);
 
