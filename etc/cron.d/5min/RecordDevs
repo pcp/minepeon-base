@@ -1,0 +1,79 @@
+#!/usr/bin/php
+<?php
+
+require('settings.inc.php');
+require('miner.inc.php');
+
+/*
+CREATE TABLE [devs] (
+[id] INTEGER DEFAULT 0 PRIMARY KEY AUTOINCREMENT NOT NULL,
+[When] INTEGER  NULL,
+[Description] VARCHAR(24)  NULL,
+[DevID] INTEGER  NULL,
+[Enabled] VARCHAR(4)  NULL,
+[Status] VARCHAR(16)  NULL,
+[DeviceElapsed] INTEGER  NULL,
+[MHSav] FLOAT  NULL,
+[MHS5s] FLOAT  NULL,
+[Accepted] INTEGER  NULL,
+[Rejected] INTEGER  NULL,
+[HardwareErrors] INTEGER  NULL,
+[Utility] FLOAT  NULL,
+[Stale] INTEGER  NULL,
+[LastSharePool] INTEGER  NULL,
+[LastShareTime] INTEGER  NULL,
+[TotalMH] FLOAT  NULL,
+[Diff1Work] FLOAT  NULL,
+[WorkUtility] FLOAT  NULL,
+[DifficultyAccepted] FLOAT  NULL,
+[DifficultyRejected] FLOAT  NULL,
+[DifficultyStale] FLOAT  NULL,
+[LastShareDifficulty] FLOAT  NULL,
+[LastValidWork] INTEGER  NULL,
+[DeviceHardware] FLOAT  NULL,
+[DeviceRejected] FLOAT  NULL,
+[create] TIMESTAMP  NULL,
+[PGA] INTEGER  NULL,
+[Name] VARCHAR(64)  NULL
+)
+*/
+
+$db = new PDO('sqlite:/opt/minepeon/var/sql/devs.db');
+$result = cgminer("devs", "");
+
+$datetime = date("Y-m-d H:i:s");
+$when = @$result['STATUS'][0]['When'];
+$description = @$result['STATUS'][0]['Description'];
+foreach ($result['DEVS'] as $device) {
+  
+  $query = 'INSERT INTO "devs" ("When","Description","Name","DevID","Enabled","Status","DeviceElapsed","MHSav","MHS5s","Accepted","Rejected","HardwareErrors","Utility","LastSharePool","LastShareTime","TotalMH","Diff1Work","DifficultyAccepted","DifficultyRejected","LastShareDifficulty","LastValidWork","DeviceHardware","DeviceRejected","create") 
+    VALUES ("' .
+    $when. '", "' .
+    $description. '", "' .
+    $device["Name"] . '", "' .
+    $device["ID"] . '", "' .
+    $device["Enabled"] . '", "' .
+    $device["Status"] . '", "' .
+    $device["DeviceElapsed"] . '", "' .
+    $device["MHSav"] . '", "' .
+    $device["MHS5s"] . '", "' .
+    $device["Accepted"] . '", "' .
+    $device["Rejected"] . '", "' .
+    $device["HardwareErrors"] . '", "' .
+    $device["Utility"] . '", "' .
+    $device["LastSharePool"] . '", "' .
+    $device["LastShareTime"] . '", "' .
+    $device["TotalMH"] . '", "' .
+    $device["Diff1Work"] . '", "' .
+    $device["DifficultyAccepted"] . '", "' .
+    $device["DifficultyRejected"] . '", "' .
+    $device["LastShareDifficulty"] . '", "' .
+    $device["LastValidWork"] . '", "' .
+    $device["DeviceHardware%"] . '", "' .
+    $device["DeviceRejected%"] . '", "' .
+    $datetime . '")';
+
+    $db->exec($query);
+}
+
+?>
