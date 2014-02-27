@@ -32,7 +32,7 @@ CREATE TABLE [devs] (
 [LastValidWork] INTEGER  NULL,
 [DeviceHardware] FLOAT  NULL,
 [DeviceRejected] FLOAT  NULL,
-[create] TIMESTAMP  NULL,
+[create_date] TIMESTAMP  NULL,
 [PGA] INTEGER  NULL,
 [Name] VARCHAR(64)  NULL
 )
@@ -46,7 +46,7 @@ $when = @$result['STATUS'][0]['When'];
 $description = @$result['STATUS'][0]['Description'];
 foreach ($result['DEVS'] as $device) {
   
-  $query = 'INSERT INTO "devs" ("When","Description","Name","DevID","Enabled","Status","DeviceElapsed","MHSav","MHS5s","Accepted","Rejected","HardwareErrors","Utility","LastSharePool","LastShareTime","TotalMH","Diff1Work","DifficultyAccepted","DifficultyRejected","LastShareDifficulty","LastValidWork","DeviceHardware","DeviceRejected","create") 
+  $query = 'INSERT INTO "devs" ("When","Description","Name","DevID","Enabled","Status","DeviceElapsed","MHSav","MHS5s","Accepted","Rejected","HardwareErrors","Utility","LastSharePool","LastShareTime","TotalMH","Diff1Work","DifficultyAccepted","DifficultyRejected","LastShareDifficulty","LastValidWork","DeviceHardware","DeviceRejected","create_date") 
     VALUES ("' .
     $when. '", "' .
     $description. '", "' .

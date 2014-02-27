@@ -40,7 +40,7 @@ CREATE TABLE [pools] (
 [BestShare] INTEGER DEFAULT '0' NULL,
 [PoolRejected] REAL DEFAULT '0' NULL,
 [PoolStale] REAL DEFAULT '0' NULL,
-[create] TIMESTAMP  NULL
+[create_date] TIMESTAMP  NULL
 )
 */
 $datetime = date("Y-m-d H:i:s");
@@ -49,7 +49,7 @@ $result = cgminer("pools", "");
 $when = @$result['STATUS'][0]['When'];
 $description = @$result['STATUS'][0]['Description'];
 foreach ($result['POOLS'] as $pool) {
-  $query = 'INSERT INTO "pools" ("When","Description","PoolID","Url","Status", "Priority", "Quota", "LongPoll", "Getworks", "Accepted", "Rejected", "Works", "Discarded", "Stale", "GetFailures", "RemoteFailures", "User", "LastShareTime", "Diff1Shares", "ProxyType", "Proxy", "DifficultyAccepted", "DifficultyRejected", "DifficultyStale", "LastShareDifficulty", "HasStratum", "StratumActive", "StratumURL", "HasGBT", "BestShare", "PoolRejected", "PoolStale","create") 
+  $query = 'INSERT INTO "pools" ("When","Description","PoolID","Url","Status", "Priority", "Quota", "LongPoll", "Getworks", "Accepted", "Rejected", "Works", "Discarded", "Stale", "GetFailures", "RemoteFailures", "User", "LastShareTime", "Diff1Shares", "ProxyType", "Proxy", "DifficultyAccepted", "DifficultyRejected", "DifficultyStale", "LastShareDifficulty", "HasStratum", "StratumActive", "StratumURL", "HasGBT", "BestShare", "PoolRejected", "PoolStale","create_date") 
     VALUES ("' .
     $when. '", "' .
     $description. '", "' .
